@@ -1,6 +1,6 @@
 import { SlashCommandBuilder } from "reciple";
 import { BaseModule } from "../BaseModule.js";
-import { CategoryChannel, ChannelType, ChatInputCommandInteraction, EmbedBuilder, PermissionFlagsBits, TextChannel } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CategoryChannel, ChannelType, ChatInputCommandInteraction, EmbedBuilder, PermissionFlagsBits, TextChannel } from "discord.js";
 import MessageUtility from "../Utils/MessageUtility.js";
 import { prisma } from "../Prisma.js";
 import { TicketCreateType } from "@prisma/client";
@@ -232,7 +232,7 @@ export class ConfigureCmd extends BaseModule {
         const createChannel = options.getChannel('ticket-create-channel', true) as TextChannel
         const parentChannel = options.getChannel('ticket-parent-channel', true) as CategoryChannel
         const transcriptsChannel = options.getChannel('transcripts-channel', true) as TextChannel
-        const toResolveCreateType = options.getString('ticket-create-tye', true) as 'button' | 'button-modal' | 'command' | 'command-modal';
+        const toResolveCreateType = options.getString('ticket-create-type', true) as 'button' | 'button-modal' | 'command' | 'command-modal';
         
         const embedTitle = options.getString('embed-title', false);
         const embedDescription = options.getString('embed-description', false);
@@ -284,6 +284,26 @@ export class ConfigureCmd extends BaseModule {
                     .setDescription(MessageUtility.createSuccessMessage('Successfully sent the configuration data to the database'))
             ]
         })
+
+        if (createType === 'Button' || createType === 'ButtonModal') {
+            await createChannel.send({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(MessageUtility.embedColourDefault)
+                        .setTitle(embedTitle ?? "Create a Ticket")
+                        .setDescription(embedDescription ?? "Create a ticket by clicking one of the buttons below")
+                ],
+                components: [
+                    new ActionRowBuilder<ButtonBuilder>().setComponents(
+                        new ButtonBuilder()
+                            .setCustomId('ticket-create-button')
+                            .setLabel('Click for support')
+                            .setStyle(ButtonStyle.Primary)
+                            .setEmoji('🎫')
+                )]
+            })
+        }
+
         return;
     }
 }
