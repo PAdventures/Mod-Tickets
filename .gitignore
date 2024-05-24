@@ -133,7 +133,7 @@ dist
 .pnp.*
 
 # Output files
-modules
+/modules
 
 # MacOS files
 .DS_Store
