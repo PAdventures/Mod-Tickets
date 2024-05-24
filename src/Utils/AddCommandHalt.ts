@@ -3,6 +3,7 @@ import { BaseModule } from "../BaseModule.js";
 import { codeBlock, EmbedBuilder, inlineCode, InteractionReplyOptions, MessageCreateOptions, MessagePayload, PermissionsBitField, time, TimestampStyles } from "discord.js";
 import MessageUtility from "./MessageUtility.js";
 import LogUtility from "./Logger.js";
+import Logger from "./Logger.js";
 
 export class AddCommandHalt extends BaseModule {
     public versions: string | string[] = "^8";
@@ -37,7 +38,9 @@ export class AddCommandHalt extends BaseModule {
             }
 
             command.setHalt(newHalt);
+            Logger.logDebug(`Command halt for \`${command.name}\` has been set`)
         }
+        Logger.logInfo('Command halt for all commands has been set')
     }
 
     private async HandleCommandHalt(haltData: AnyCommandHaltData): Promise<boolean> {
