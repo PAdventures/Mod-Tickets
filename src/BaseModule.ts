@@ -9,6 +9,6 @@ export abstract class BaseModule implements RecipleInteractionListenerModule {
     
     public abstract onStart(data: RecipleModuleStartData): string | boolean | Error | Promise<string | boolean | Error>;
 
-    public onLoad(data: RecipleModuleLoadData): string | void | Error | Promise<string | void | Error> {}
-    public onUnload(data: RecipleModuleUnloadData): string | void | Error | Promise<string | void | Error> {}
+    public onLoad(_data: RecipleModuleLoadData): string | void | Error | Promise<string | void | Error> {}
+    public onUnload(_data: RecipleModuleUnloadData): string | void | Error | Promise<string | void | Error> {}
 }
