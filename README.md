@@ -1,5 +1,7 @@
 # Mod Tickets
 
+![CodeQL analysis](https://github.com/github/docs/actions/workflows/codeql.yml/badge.svg)
+
 Mod Tickets is a discord bot (or App) generated using the TypeScript reciple template
 
 > This application was generated using the [`create-reciple`](https://npm.im/create-reciple) template. Please show them some love as this project wouldn't have been easy without them
