@@ -1,7 +1,7 @@
 ---
 name: Question
 about: Ask a question if you are unsure about something
-title: "[QUESTION] - <Question short descrption>"
+title: "[QUESTION] - <Question short description>"
 labels: Question
 assignees: ''
 
