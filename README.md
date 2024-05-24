@@ -33,3 +33,14 @@ Usage: `/help`
 Description: Shows all commands available with their respective description
 
 Cooldown: `1 minute`
+
+#### Configure - Slash Command
+
+Usage:\
+`/configure enable-system`\
+`/configure disable-system`\
+`/configure system <Req. Options> [Opt. Options]`
+
+Description: Manage the configuration data that Mod Tickets will use
+
+Cooldown: `2 minutes`
