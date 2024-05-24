@@ -287,3 +287,5 @@ export class ConfigureCmd extends BaseModule {
         return;
     }
 }
+
+export default new ConfigureCmd();
