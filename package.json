@@ -9,7 +9,7 @@
     "db:gen:push": "bun run db:gen && bun run db:push",
     "start": "reciple -c reciple.mjs",
     "build:start": "bun run build && reciple -c reciple.mjs",
-    "dev": "nodemon --ext ts,mts,cts,json --ignore ./modules --exec \"bun run build && reciple -c reciple.mjs\" --signal SIGHUP",
+    "dev": "nodemon --ext ts,mts,cts,json --ignore ./modules --exec \"bun run build && reciple -c reciple.test.mjs\" --signal SIGHUP",
     "flush:logs": "rimraf ./logs/*.log.gz -g"
   },
   "dependencies": {
