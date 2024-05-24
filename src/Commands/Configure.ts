@@ -23,7 +23,7 @@ export class ConfigureCmd extends BaseModule {
                 )
                 .addSubcommand(system => system
                     .setName('system')
-                    .setDescription('The configuration data can been managed here')
+                    .setDescription('The configuration data can be managed here')
                     .addChannelOption(createChannel => createChannel
                         .setName('ticket-create-channel')
                         .setDescription('The text channel where users can create a ticket')
