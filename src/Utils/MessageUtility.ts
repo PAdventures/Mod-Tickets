@@ -20,6 +20,11 @@ export class MessageUtility extends BaseModule {
 	public defaultQuestionEmoji: string = '❓';
 	public defaultInfoEmoji: string = 'ℹ️';
 
+    public ErrorMessages = {
+        DATABASE_ERROR: "Oh no! Something went wrong when trying to edit the data in the database. Please try again later",
+        NOT_CACHED_GUILD: "Oh no! Something went wrong as you are not in a cached guild. Please try again later"
+    }
+
 	public createErrorMessage(message: string): string {
 		return this.createLabel(message, this.defaultErrorEmoji);
 	}
