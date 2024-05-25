@@ -15,34 +15,36 @@ datasource db {
 
 model TicketConfig {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
-  guild_id  String  @unique
+  guild_id String @unique
 
-  create_channel_id String
-  transcripts_channel_id    String
-  ticket_parent_channel_id  String
+  create_channel_id        String
+  transcripts_channel_id   String
+  ticket_parent_channel_id String
 
-  ticket_type  TicketType
+  ticket_create_type TicketCreateType
 
-  embed_title   String?
+  embed_title       String?
   embed_description String?
+
+  enabled Boolean @default(true)
 }
 
 model Tickets {
-    id       String @id @default(auto()) @map("_id") @db.ObjectId
-    guild_id    String
-    ticket_channel_id   String
-    ticket_id   String
+  id                String @id @default(auto()) @map("_id") @db.ObjectId
+  guild_id          String
+  ticket_channel_id String
+  ticket_id         String
 
-    creator_id  String
-    member_ids  String[]
+  creator_id String
+  member_ids String[]
 
-    closed  Boolean  @default(false)
-    locked  Boolean @default(false)
+  closed Boolean @default(false)
+  locked Boolean @default(false)
 }
 
-enum TicketType {
-    Button
-    ButtonModal
-    Command
-    CommandModal
+enum TicketCreateType {
+  Button
+  ButtonModal
+  Command
+  CommandModal
 }

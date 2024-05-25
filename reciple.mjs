@@ -52,7 +52,7 @@ export const config = {
         disableLogPrefix: false,
         logToFile: {
             enabled: true,
-            logsFolder: './logs',
+            logsFolder: './logs/production',
             file: 'latest.log'
         }
     },
