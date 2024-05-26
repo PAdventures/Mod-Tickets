@@ -13,7 +13,12 @@ Mod Tickets has a range of simple features to make your ticketing experience as 
 Some example are:
 
 - Creating tickets (obviously)
+  - Using commands
+  - Using commands w/ modals
+  - Using a button (the simple one)
+  - Using a button w/ modals
 - Ticket channel locking
+  - Support for locking & unlocking
 - Transcripts
 
 ### Commands
