@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonInteraction, ChannelType, ChatInputCommandInteraction, ContextMenuCommandInteraction, ModalBuilder, ModalSubmitInteraction, PermissionFlagsBits, TextChannel, TextInputBuilder, TextInputStyle } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ChannelType, ChatInputCommandInteraction, ContextMenuCommandInteraction, ModalBuilder, ModalSubmitInteraction, PermissionFlagsBits, TextChannel, TextInputBuilder, TextInputStyle } from "discord.js";
 import { BaseModule } from "../BaseModule.js";
 import Logger from "./Logger.js";
 import { TicketConfig } from "@prisma/client";
@@ -30,7 +30,7 @@ export class Helper extends BaseModule {
                 new ActionRowBuilder<TextInputBuilder>().addComponents(
                     new TextInputBuilder()
                         .setCustomId('ticketDescription')
-                        .setLabel('Please describe you issue/reason for the support')
+                        .setLabel('Please describe your issue/reason')
                         .setPlaceholder('Enter ticket description...')
                         .setMaxLength(1024)
                         .setStyle(TextInputStyle.Paragraph)
@@ -39,7 +39,7 @@ export class Helper extends BaseModule {
                 new ActionRowBuilder<TextInputBuilder>().addComponents(
                     new TextInputBuilder()
                         .setCustomId('ticketExtraNotes')
-                        .setLabel('Please provide any additional information if applicable')
+                        .setLabel('Please provide any additional info if needed')
                         .setPlaceholder('Enter additional info...')
                         .setMaxLength(1024)
                         .setStyle(TextInputStyle.Paragraph)
@@ -54,6 +54,21 @@ export class Helper extends BaseModule {
             Logger.logError(err)
             return;
         }
+    }
+
+    public TicketPanelButtons(): ActionRowBuilder<ButtonBuilder> {
+        return new ActionRowBuilder<ButtonBuilder>().setComponents(
+            new ButtonBuilder()
+                .setCustomId('ticket-lock-button')
+                .setLabel('Lock Ticket')
+                .setEmoji('🔐')
+                .setStyle(ButtonStyle.Secondary),
+            new ButtonBuilder()
+                .setCustomId('ticket-close-button')
+                .setLabel('Close Ticket')
+                .setEmoji('📁')
+                .setStyle(ButtonStyle.Danger)
+        )
     }
 
     public generateTicketId(): string {
