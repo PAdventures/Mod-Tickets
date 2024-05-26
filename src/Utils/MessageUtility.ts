@@ -22,7 +22,9 @@ export class MessageUtility extends BaseModule {
 
     public ErrorMessages = {
         DATABASE_ERROR: "Oh no! Something went wrong when trying to edit the data in the database. Please try again later",
-        NOT_CACHED_GUILD: "Oh no! Something went wrong as you are not in a cached guild. Please try again later"
+        NOT_CACHED_GUILD: "Oh no! Something went wrong as you are not in a cached guild. Please try again later",
+        NO_TICKET_CONFIG: "Oh no! Something went wrong as this server does not seem to have configuration data. Please try again later, or, run `/configure system`",
+        UNKNOWN_ERROR: "Oh no! Something unexpected happened which I don't know how to handle. Please try again later",
     }
 
 	public createErrorMessage(message: string): string {
