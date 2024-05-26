@@ -77,6 +77,7 @@ export class ConfigureCmd extends BaseModule {
                                     .setColor(MessageUtility.embedColourError)
                                     .setAuthor({ name: "Error" })
                                     .setDescription(MessageUtility.createErrorMessage(MessageUtility.ErrorMessages.NOT_CACHED_GUILD))
+                                    .setTimestamp()
                             ],
                             ephemeral: true,
                         })
@@ -110,11 +111,8 @@ export class ConfigureCmd extends BaseModule {
                     new EmbedBuilder()
                         .setColor(MessageUtility.embedColourError)
                         .setAuthor({ name: "Error" })
-                        .setDescription(`
-                        ${MessageUtility.createErrorMessage('The configuration was unable to be fetched from the database.')}
-
-                        ${MessageUtility.createTipMessage('Try running`/configure system` to add configuration data if you never did')}
-                        `)
+                        .setDescription(MessageUtility.createErrorMessage(MessageUtility.ErrorMessages.NO_TICKET_CONFIG))
+                        .setTimestamp()
                 ]
             })
             return;
@@ -131,6 +129,7 @@ export class ConfigureCmd extends BaseModule {
 
                         😜 Looks like the system was already enabled. But hey, you achieved your goal anyways
                         `)
+                        .setTimestamp()
                 ]
             })
             return;
@@ -148,6 +147,7 @@ export class ConfigureCmd extends BaseModule {
                         .setColor(MessageUtility.embedColourError)
                         .setAuthor({ name: "Error" })
                         .setDescription(MessageUtility.createErrorMessage(MessageUtility.ErrorMessages.DATABASE_ERROR))
+                        .setTimestamp()
                 ]
             })
             return;
@@ -159,6 +159,7 @@ export class ConfigureCmd extends BaseModule {
                     .setColor(MessageUtility.embedColourSuccess)
                     .setAuthor({ name: "Success" })
                     .setDescription(MessageUtility.createSuccessMessage("Successfully enabled the ticketing system"))
+                    .setTimestamp()
             ]
         })
         return;
@@ -172,11 +173,8 @@ export class ConfigureCmd extends BaseModule {
                     new EmbedBuilder()
                         .setColor(MessageUtility.embedColourError)
                         .setAuthor({ name: "Error" })
-                        .setDescription(`
-                        ${MessageUtility.createErrorMessage('The configuration was unable to be fetched from the database.')}
-
-                        ${MessageUtility.createTipMessage('Try running`/configure system` to add configuration data if you never did')}
-                        `)
+                        .setDescription(MessageUtility.createErrorMessage(MessageUtility.ErrorMessages.NO_TICKET_CONFIG))
+                        .setTimestamp()
                 ]
             })
             return;
@@ -193,6 +191,7 @@ export class ConfigureCmd extends BaseModule {
 
                         😜 Looks like the system was already disabled. But hey, you achieved your goal anyways
                         `)
+                        .setTimestamp()
                 ]
             })
             return;
@@ -210,6 +209,7 @@ export class ConfigureCmd extends BaseModule {
                         .setColor(MessageUtility.embedColourError)
                         .setAuthor({ name: "Error" })
                         .setDescription(MessageUtility.createErrorMessage(MessageUtility.ErrorMessages.DATABASE_ERROR))
+                        .setTimestamp()
                 ]
             })
             return;
@@ -221,6 +221,7 @@ export class ConfigureCmd extends BaseModule {
                     .setColor(MessageUtility.embedColourSuccess)
                     .setAuthor({ name: "Success" })
                     .setDescription(MessageUtility.createSuccessMessage("Successfully disabled the ticketing system"))
+                    .setTimestamp()
             ]
         })
         return;
@@ -271,6 +272,7 @@ export class ConfigureCmd extends BaseModule {
                         .setColor(MessageUtility.embedColourError)
                         .setAuthor({ name: "Error" })
                         .setDescription(MessageUtility.createErrorMessage(MessageUtility.ErrorMessages.DATABASE_ERROR))
+                        .setTimestamp()
                 ]
             })
             return;
@@ -282,6 +284,7 @@ export class ConfigureCmd extends BaseModule {
                     .setColor(MessageUtility.embedColourSuccess)
                     .setAuthor({ name: "Success" })
                     .setDescription(MessageUtility.createSuccessMessage('Successfully sent the configuration data to the database'))
+                    .setTimestamp()
             ]
         })
 
@@ -292,6 +295,7 @@ export class ConfigureCmd extends BaseModule {
                         .setColor(MessageUtility.embedColourDefault)
                         .setTitle(embedTitle ?? "Create a Ticket")
                         .setDescription(embedDescription ?? "Create a ticket by clicking one of the buttons below")
+                        .setTimestamp()
                 ],
                 components: [
                     new ActionRowBuilder<ButtonBuilder>().setComponents(
