@@ -1,7 +1,7 @@
 import { cli, SlashCommandBuilder } from "reciple";
 import { BaseModule } from "../BaseModule.js";
 import { readdir, readFile } from "fs/promises";
-import { existsSync } from "fs";
+import { existsSync } from "node:fs";
 import path from "path";
 import { AttachmentBuilder, EmbedBuilder } from "discord.js";
 import MessageUtility from "../Utils/MessageUtility.js";
