@@ -33,24 +33,24 @@ export class TicketCreateBtn extends BaseModule {
                         .setAuthor({ name: "Error" })
                         .setDescription(MessageUtility.createErrorMessage(MessageUtility.ErrorMessages.NOT_CACHED_GUILD))
                         .setTimestamp()
-                ]
+                ],
+                ephemeral: true
             })
             return;
         }
 
-        await interaction.deferReply({ ephemeral: true });
-
         const ticketConfig = await prisma.ticketConfig.findUnique({ where: { guild_id: interaction.guild.id } });
 
         if (!ticketConfig) {
-            await interaction.editReply({
+            await interaction.reply({
                 embeds: [
                     new EmbedBuilder()
                         .setColor(MessageUtility.embedColourError)
                         .setAuthor({ name: "Error" })
                         .setDescription(MessageUtility.createErrorMessage(MessageUtility.ErrorMessages.NO_TICKET_CONFIG))
                         .setTimestamp()
-                ]
+                ],
+                ephemeral: true
             })
             return;
         }
@@ -59,14 +59,15 @@ export class TicketCreateBtn extends BaseModule {
         const memberHasOpenTicket = memberTicket === null ? false : true;
 
         if (memberHasOpenTicket) {
-            await interaction.editReply({
+            await interaction.reply({
                 embeds: [
                     new EmbedBuilder()
                         .setColor(MessageUtility.embedColourError)
                         .setAuthor({ name: "Error" })
                         .setDescription(MessageUtility.createErrorMessage(`You have exceeded the number of open tickets you can have at once. Please first close your ticket at ${channelMention(memberTicket!.ticket_channel_id)}`))
                         .setTimestamp()
-                ]
+                ],
+                ephemeral: true
             })
             return;
         }
@@ -75,6 +76,29 @@ export class TicketCreateBtn extends BaseModule {
             case 'Button': {
                 const ticketId = Helper.generateTicketId();
                 const ticketChannel = await Helper.CreateTicketChannel(interaction, ticketConfig, ticketId)
+                try {
+                    await prisma.tickets.create({
+                        data: {
+                            guild_id: interaction.guild.id,
+                            ticket_channel_id: ticketChannel.id,
+                            ticket_id: ticketId,
+                            creator_id: interaction.member.id
+                        }
+                    });
+                } catch (err) {
+                    await interaction.reply({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setColor(MessageUtility.embedColourError)
+                                .setAuthor({ name: "Error" })
+                                .setDescription(MessageUtility.createErrorMessage(MessageUtility.ErrorMessages.DATABASE_ERROR))
+                                .setTimestamp()
+                        ],
+                        ephemeral: true
+                    })
+                    await ticketChannel.delete();
+                    return;
+                }
                 await ticketChannel.send({
                     embeds: [
                         new EmbedBuilder()
@@ -89,21 +113,10 @@ export class TicketCreateBtn extends BaseModule {
                             .setTimestamp()
                     ],
                     components: [
-                        new ActionRowBuilder<ButtonBuilder>().setComponents(
-                            new ButtonBuilder()
-                                .setCustomId('ticket-lock-button')
-                                .setLabel('Lock Ticket')
-                                .setEmoji('🔐')
-                                .setStyle(ButtonStyle.Secondary),
-                            new ButtonBuilder()
-                                .setCustomId('ticket-close-button')
-                                .setLabel('Close Ticket')
-                                .setEmoji('📁')
-                                .setStyle(ButtonStyle.Danger)
-                        )
+                        Helper.TicketPanelButtons()
                     ]
                 })
-                await interaction.editReply({
+                await interaction.reply({
                     embeds: [
                         new EmbedBuilder()
                             .setColor(MessageUtility.embedColourSuccess)
@@ -114,58 +127,25 @@ export class TicketCreateBtn extends BaseModule {
                             ${MessageUtility.createInfoMessage(`You can find you ticket at ${channelMention(ticketChannel.id)}`)}
                             `)
                             .setTimestamp()
-                    ]
+                    ],
+                    ephemeral: true
                 })
                 return;
             }
             case 'ButtonModal': {
-                const createTicketModal = new ModalBuilder()
-                    .setCustomId('ticket-create-modal')
-                    .setTitle('Create a Ticket')
-                    .addComponents(
-                        new ActionRowBuilder<TextInputBuilder>().addComponents(
-                            new TextInputBuilder()
-                                .setCustomId('ticketTopic')
-                                .setLabel('What is the Topic of your support?')
-                                .setPlaceholder('Enter ticket topic/title...')
-                                .setMaxLength(256)
-                                .setStyle(TextInputStyle.Short)
-                                .setRequired(true)
-                        ),
-                        new ActionRowBuilder<TextInputBuilder>().addComponents(
-                            new TextInputBuilder()
-                                .setCustomId('ticketDescription')
-                                .setLabel('Please describe you issue/reason for the support')
-                                .setPlaceholder('Enter ticket description...')
-                                .setMaxLength(1024)
-                                .setStyle(TextInputStyle.Paragraph)
-                                .setRequired(true)
-                        ),
-                        new ActionRowBuilder<TextInputBuilder>().addComponents(
-                            new TextInputBuilder()
-                                .setCustomId('ticketExtraNotes')
-                                .setLabel('Please provide any additional information if applicable')
-                                .setPlaceholder('Enter additional info...')
-                                .setMaxLength(1024)
-                                .setStyle(TextInputStyle.Paragraph)
-                                .setValue('No additional information')
-                                .setRequired(false)
-                        )
-                    )
-
-                await interaction.showModal(createTicketModal);
-
+                await Helper.ShowCreateTicketModal(interaction);
                 return;
             }
             default:
-                await interaction.editReply({
+                await interaction.reply({
                     embeds: [
                         new EmbedBuilder()
                             .setColor(MessageUtility.embedColourError)
                             .setAuthor({ name: "Error" })
                             .setDescription(MessageUtility.createErrorMessage(MessageUtility.ErrorMessages.UNKNOWN_ERROR))
                             .setTimestamp()
-                    ]
+                    ],
+                    ephemeral: true,
                 })
                 return;
         }
