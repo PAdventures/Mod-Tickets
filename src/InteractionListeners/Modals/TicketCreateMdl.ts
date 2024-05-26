@@ -1,6 +1,6 @@
 import { InteractionListenerType } from "reciple-interaction-events";
 import { BaseModule } from "../../BaseModule.js";
-import { CacheType, channelMention, EmbedBuilder, ModalSubmitInteraction, PermissionFlagsBits } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, CacheType, channelMention, EmbedBuilder, ModalSubmitInteraction, PermissionFlagsBits } from "discord.js";
 import MessageUtility from "../../Utils/MessageUtility.js";
 import { prisma } from "../../Prisma.js";
 import Helper from "../../Utils/Helper.js";
@@ -35,6 +35,8 @@ export class TicketCreateMdl extends BaseModule {
             })
             return;
         }
+
+        await interaction.deferReply({ ephemeral: true });
 
         const ticketConfig = await prisma.ticketConfig.findUnique({ where: { guild_id: interaction.guild.id } });
 
@@ -86,6 +88,28 @@ export class TicketCreateMdl extends BaseModule {
 
         const ticketId = Helper.generateTicketId();
         const ticketChannel = await Helper.CreateTicketChannel(interaction, ticketConfig, ticketId);
+        try {
+            await prisma.tickets.create({
+                data: {
+                    guild_id: interaction.guild.id,
+                    ticket_channel_id: ticketChannel.id,
+                    ticket_id: ticketId,
+                    creator_id: interaction.member.id
+                }
+            });
+        } catch (err) {
+            await interaction.editReply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(MessageUtility.embedColourError)
+                        .setAuthor({ name: "Error" })
+                        .setDescription(MessageUtility.createErrorMessage(MessageUtility.ErrorMessages.DATABASE_ERROR))
+                        .setTimestamp()
+                ]
+            })
+            await ticketChannel.delete();
+            return;
+        }
         await ticketChannel.send({
             embeds: [
                 new EmbedBuilder()
@@ -111,6 +135,17 @@ export class TicketCreateMdl extends BaseModule {
                         }
                     ])
                     .setTimestamp()
+            ],
+            components: [
+                Helper.TicketPanelButtons()
+            ]
+        })
+        await interaction.editReply({
+            embeds: [
+                new EmbedBuilder()
+                    .setColor(MessageUtility.embedColourSuccess)
+                    .setAuthor({ name: "Success" })
+                    .setDescription(MessageUtility.createSuccessMessage(`Successfully created your ticket in ${channelMention(ticketChannel.id)}`))
             ]
         })
     }
