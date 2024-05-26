@@ -12,29 +12,29 @@ export class Logger extends BaseModule {
 		return true;
 	}
 
-	public logError(message: string): void {
+	public logError(...data: any[]): void {
 		if (!this.logger) return;
-		this.logger.error(message);
+		this.logger.error(...data);
 	}
 
-	public logInfo(message: string): void {
+	public logInfo(...data: any[]): void {
 		if (!this.logger) return;
-		this.logger.info(message);
+		this.logger.info(...data);
 	}
 
-	public logWarning(message: string): void {
+	public logWarning(...data: any[]): void {
 		if (!this.logger) return;
-		this.logger.warn(message);
+		this.logger.warn(...data);
 	}
 
-	public logDebug(message: string): void {
+	public logDebug(...data: any[]): void {
 		if (!this.logger) return;
-		this.logger.debug(message);
+		this.logger.debug(...data);
 	}
 
-	public logMessage(message: string): void {
+	public logMessage(...data: any[]): void {
 		if (!this.logger) return;
-		this.logger.log(message);
+		this.logger.log(...data);
 	}
 }
 
