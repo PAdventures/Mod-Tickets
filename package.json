@@ -21,7 +21,7 @@
     "path": "^0.12.7",
     "reciple": "^8.3.2",
     "reciple-anticrash": "^2.1.2",
-    "reciple-dev-commands": "^2.1.2",
+    "reciple-dev-commands": "^3.0.1",
     "reciple-interaction-events": "^2.1.1",
     "reciple-registry-cache": "^2.1.2"
   },
